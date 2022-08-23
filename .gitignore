@@ -1,0 +1,8 @@
+config.py
+__pycache__/
+*.twb
+*.twbr
+*.csv
+.ipynb_checkpoints/
+*ipynb
+*.xlsx
