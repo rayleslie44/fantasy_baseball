@@ -1,4 +1,4 @@
-# import libraries
+# imports
 import pandas as pd
 
 # add box scores data
@@ -218,7 +218,19 @@ box_history_data = [
 [18, 11, 36, 7, 27, 3, 0.327, 0.4487, 52, 4, 1, 5.324, 1.585, 2.364, 4, 7, 1, 'Y'],
 [18, 13, 35, 8, 19, 5, 0.3403, 0.4245, 59, 3, 3, 3.076, 1.196, 4.917, 9, 3, 0, 'Y'],
 [18, 14, 32, 7, 30, 2, 0.368, 0.5044, 78, 5, 3, 2.378, 1.01, 6, 9, 3, 0, 'Y'],
-[18, 15, 27, 8, 26, 1, 0.3371, 0.4516, 27, 0, 6, 5.4, 1.433, 3.375, 4, 8, 0, 'N']
+[18, 15, 27, 8, 26, 1, 0.3371, 0.4516, 27, 0, 6, 5.4, 1.433, 3.375, 4, 8, 0, 'N'],
+[19, 1, 30, 11, 29, 2, 0.3367, 0.5635, 37, 0, 2, 5.304, 1.446, 2.176, 5, 6, 1, 'N'],
+[19, 2, 37, 11, 35, 4, 0.3136, 0.4714, 77, 8, 3, 1.643, 1.057, 2.655, 8, 4, 0, 'Y'],
+[19, 3, 28, 10, 30, 0, 0.3641, 0.52, 41, 4, 4, 2.551, 0.992, 4.1, 9, 3, 0, 'Y'],
+[19, 5, 30, 4, 23, 3, 0.3836, 0.4328, 60, 4, 5, 4.896, 1.212, 4, 9, 3, 0, 'Y'],
+[19, 7, 31, 2, 21, 4, 0.3275, 0.348, 45, 4, 1, 2.761, 1.074, 2.647, 5, 6, 1, 'Y'],
+[19, 8, 32, 9, 33, 5, 0.3487, 0.4783, 54, 4, 1, 3.277, 1.006, 3.857, 9, 2, 1, 'Y'],
+[19, 9, 34, 7, 26, 3, 0.3426, 0.3884, 68, 4, 0, 3.496, 1.125, 3.579, 2, 9, 1, 'Y'],
+[19, 10, 20, 2, 18, 2, 0.3581, 0.3951, 60, 5, 1, 1.295, 0.863, 4.286, 6, 5, 1, 'Y'],
+[19, 11, 19, 6, 21, 1, 0.2605, 0.301, 49, 5, 1, 3.42, 1.04, 3.063, 3, 9, 0, 'Y'],
+[19, 13, 25, 6, 23, 6, 0.3453, 0.43, 55, 6, 2, 1.688, 0.835, 4.231, 4, 8, 0, 'Y'],
+[19, 14, 22, 4, 23, 0, 0.2983, 0.3472, 56, 4, 2, 3.42, 0.94, 5.091, 6, 5, 1, 'Y'],
+[19, 15, 21, 7, 21, 4, 0.3274, 0.4671, 31, 3, 1, 4.247, 1.213, 3.444, 3, 9, 0, 'N']
 ]
 
 # set box score columns 
@@ -234,8 +246,8 @@ for col in ['OBP', 'SLG']:
 # create long data frame
 boxscores_long = pd.melt(boxscores, id_vars=['Week', 'Team ID', 'Win', 'Loss', 'Tie', 'MIP'], var_name='Category', value_name='Value')
 
-# create function to apply type of each category
-def f_type(row):
+# create function to apply category type
+def f_category_type(row):
     
     if row['Category'] in ('R', 'HR', 'RBI', 'SB', 'OBP', 'SLG'):
         
@@ -248,7 +260,7 @@ def f_type(row):
     return val
 
 # apply function to long data frame
-boxscores_long['Type'] = boxscores_long.apply(f_type, axis=1)
+boxscores_long['Type'] = boxscores_long.apply(f_category_type, axis=1)
 
 # reorder columns
 boxscores_long = boxscores_long[['Week', 'Team ID', 'Win', 'Loss', 'Tie', 'MIP', 'Type', 'Category', 'Value']]
@@ -259,4 +271,5 @@ frames = [boxscores, boxscores_long]
 
 # save data frames to csv file
 for name, data in zip(names, frames):
+    
     data.to_csv('{}.csv'.format(name), index=False)

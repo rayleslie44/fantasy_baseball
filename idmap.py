@@ -1,11 +1,9 @@
-# import libraries
+# imports
 import pandas as pd
-
-# import rosters from ESPN API
 from config import rosters
 
 # create function that labels positions by batter or pitcher
-def label_position(row):
+def f_label_position(row):
     
     if row['Position'] == 'P':
         
@@ -68,7 +66,7 @@ def map_ids(x):
     df_ids = df_ids.dropna(subset=['{}'.format(id)]).reset_index(drop=True)
 
     # apply function on new column to label players as batter or pitcher
-    df_ids['Batter/Pitcher'] = df_ids.apply(lambda row: label_position(row), axis=1)
+    df_ids['Batter/Pitcher'] = df_ids.apply(lambda row: f_label_position(row), axis=1)
 
     # reorder columns
     df_ids = df_ids[['Team ID', 'ESPNID', '{}'.format(id), 'Player', 'Team', 'Injury Status', 'Position', 'Batter/Pitcher']]
@@ -94,8 +92,6 @@ def map_ids(x):
 
     return df_ids
 
-# create statcast rosters data frame
+# create statcast and fangraphs rosters data frames
 rosters_statcast = map_ids('statcast')
-
-# create fangraphs rosters data frame
 rosters_fangraphs = map_ids('fangraphs')
