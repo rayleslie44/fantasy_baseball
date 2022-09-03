@@ -4,12 +4,12 @@ from stats_fangraphs import get_fangraphs_data
 from stats_statcast import get_statcast_data
 
 # create list of years to pull data for
-years = [2022, 2021, 2020]
+years = [2022, 2021, 2020, 2019]
 
 # create list of both player types to pull fangraphs data for
 types = ['Batter', 'Pitcher']
 
-# create list of data frames to store appended results
+# create data frames to store appended results
 stats_statcast = pd.DataFrame()
 stats_fangraphs = pd.DataFrame()
 
@@ -26,7 +26,7 @@ for year in years:
 
         df_f = get_fangraphs_data(year, type)
 
-        stats_fangraphs = stats_fangraphs.append(df_f)
+        stats_fangraphs = stats_fangraphs.append(df_f).reset_index(drop=True)
 
 # define data frames to save
 names = ['stats_statcast', 'stats_fangraphs']
