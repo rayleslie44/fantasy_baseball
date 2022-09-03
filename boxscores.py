@@ -243,33 +243,5 @@ boxscores = pd.DataFrame(box_history_data, columns=box_history_data_columns)
 for col in ['OBP', 'SLG']:
     boxscores[col] = boxscores[col].apply(lambda x: x * 100)
 
-# create long data frame
-boxscores_long = pd.melt(boxscores, id_vars=['Week', 'Team ID', 'Win', 'Loss', 'Tie', 'MIP'], var_name='Category', value_name='Value')
-
-# create function to apply category type
-def f_category_type(row):
-    
-    if row['Category'] in ('R', 'HR', 'RBI', 'SB', 'OBP', 'SLG'):
-        
-        val = 'Batting'
-    
-    elif row['Category'] in ('K', 'W', 'SV', 'ERA', 'WHIP', 'K/BB'):
-        
-        val = 'Pitching'
-    
-    return val
-
-# apply function to long data frame
-boxscores_long['Type'] = boxscores_long.apply(f_category_type, axis=1)
-
-# reorder columns
-boxscores_long = boxscores_long[['Week', 'Team ID', 'Win', 'Loss', 'Tie', 'MIP', 'Type', 'Category', 'Value']]
-
-# define data frames to save
-names = ['boxscores', 'boxscores_long']
-frames = [boxscores, boxscores_long]
-
-# save data frames to csv file
-for name, data in zip(names, frames):
-    
-    data.to_csv('{}.csv'.format(name), index=False)
+# save data frame to csv file
+boxscores.to_csv('boxscores.csv', index=False)
